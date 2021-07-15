@@ -82,16 +82,6 @@ public class LunarClientAPICooldown {
      * returns {@code false} for the provided name.
      */
     public Optional<LCCooldown> getCooldown(String cooldownName) {
-
-        Optional<LCCooldown> cooldownOptional;
-
-        if(isCooldownRegistered(cooldownName)) {
-            cooldownOptional = Optional.of(registeredCooldowns.get(cooldownName));
-        }
-        else {
-            cooldownOptional = Optional.empty();
-        }
-
-        return cooldownOptional;
+        return Optional.ofNullable(registeredCooldowns.get(cooldownName));
     }
 }
