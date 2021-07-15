@@ -46,11 +46,52 @@ public class LunarClientAPICooldown {
         registeredCooldowns.get(cooldownId).send(player);
     }
 
+    /**
+     * Removes the {@link LCCooldown} associated with the provided cooldown name that is
+     * currently registered from a Lunar Client player
+     *
+     * @param player The player to remove the cooldown for
+     * @param cooldownName The name of the {@link LCCooldown} to remove
+     */
     public void clearCooldown(Player player, String cooldownName) {
         String cooldownId = cooldownName.toLowerCase();
         if (!registeredCooldowns.containsKey(cooldownId)) {
             throw new IllegalStateException("Attempted to send a cooldown that isn't registered [" + cooldownName + "]");
         }
         registeredCooldowns.get(cooldownId).clear(player);
+    }
+
+    /**
+     * Checks to see if the provided cooldown name is a currently registered cooldown
+     *
+     * @param cooldownName The name of the {@link LCCooldown} to check
+     * @return {@code true} if the provided name is currently registered
+     */
+    public boolean isCooldownRegistered(String cooldownName) {
+        return registeredCooldowns.containsKey(cooldownName);
+    }
+
+    /**
+     * Gets an {@link Optional} that either contains the {@link LCCooldown} associated with
+     * the provided name or an empty {@link Optional} if {@link #isCooldownRegistered(String)}
+     * returns {@code false} for the provided name.
+     *
+     * @param cooldownName The name of the {@link LCCooldown} to get
+     * @return An {@link Optional} that either contains the {@link LCCooldown} associated with
+     * the provided name or an empty {@link Optional} if {@link #isCooldownRegistered(String)}
+     * returns {@code false} for the provided name.
+     */
+    public Optional<LCCooldown> getCooldown(String cooldownName) {
+
+        Optional<LCCooldown> cooldownOptional;
+
+        if(isCooldownRegistered(cooldownName)) {
+            cooldownOptional = Optional.of(registeredCooldowns.get(cooldownName));
+        }
+        else {
+            cooldownOptional = Optional.empty();
+        }
+
+        return cooldownOptional;
     }
 }
